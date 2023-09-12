@@ -8,7 +8,9 @@ INSERT INTO pago (monto_pago)
 VALUES
     (35000),
     (20000),
-    (13000);
+    (13000),
+    (30000),
+    (15000);
 	
 -- TABLA DETALLE
 CREATE TABLE IF NOT EXISTS detalle (
@@ -21,7 +23,9 @@ INSERT INTO detalle (id_pago)
 VALUES
     (1),
     (2),
-    (3);
+    (3),
+    (4),
+    (5);
 	
 -- TABLA PRODUCTO
 CREATE TABLE IF NOT EXISTS producto (
@@ -61,7 +65,9 @@ VALUES
  (3,1),
  (2,2),
  (3,2),
- (4,3);
+ (4,3),
+ (1,4);
+
 
 INSERT INTO servicio_detalle (id_servicio, id_detalle)
 VALUES
@@ -70,4 +76,7 @@ VALUES
  (6,1),
  (4,2),
  (6,2),
- (3,3);
+ (3,3),
+ (1,4),
+ (2,5),
+ (6,5);
