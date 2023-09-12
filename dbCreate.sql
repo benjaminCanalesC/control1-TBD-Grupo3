@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS public.cita(
     id_horario INTEGER,
     id_empleado INTEGER,
     id_detalle INTEGER,
+	id_cliente INTEGER,
     duracion TEXT COLLATE pg_catalog."default");
 
 CREATE TABLE IF NOT EXISTS public.producto(
