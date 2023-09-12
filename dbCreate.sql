@@ -5,180 +5,156 @@ BEGIN;
 -- Creación de las tablas
 
 CREATE TABLE IF NOT EXISTS public.cliente(
-    idCliente SERIAL PRIMARY KEY,
-    nombreCliente TEXT COLLATE pg_catalog."default",
-    apellidoCliente TEXT COLLATE pg_catalog."default",
-    idComuna INTEGER);
+    id_cliente SERIAL PRIMARY KEY,
+    nombre_cliente TEXT COLLATE pg_catalog."default",
+    apellido_cliente TEXT COLLATE pg_catalog."default",
+    id_comuna INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.comuna
-(
-    idComuna SERIAL PRIMARY KEY,
-    nombreComuna TEXT COLLATE pg_catalog."default"
-);
+CREATE TABLE IF NOT EXISTS public.comuna(
+    id_comuna SERIAL PRIMARY KEY,
+    nombre_comuna TEXT COLLATE pg_catalog."default");
 
-CREATE TABLE IF NOT EXISTS public.empleado
-(
-    idEmpleado SERIAL PRIMARY KEY,
-    nombreEmpleado TEXT COLLATE pg_catalog."default",
-    rolEmpleado TEXT COLLATE pg_catalog."default",
-    idComuna INTEGER,
-    idSueldo INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.empleado(
+    id_empleado SERIAL PRIMARY KEY,
+    nombre_empleado TEXT COLLATE pg_catalog."default",
+    rol_empleado TEXT COLLATE pg_catalog."default",
+    id_comuna INTEGER,
+    id_sueldo INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.sueldo
-(
-    idSueldo SERIAL PRIMARY KEY,
-    monto INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.sueldo(
+    id_sueldo SERIAL PRIMARY KEY,
+    monto INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.cliente_peluqueria
-(
-    idClientePeluqueria SERIAL PRIMARY KEY,
-    idCliente INTEGER,
-    idPeluqueria INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.cliente_peluqueria(
+    id_cliente_peluqueria SERIAL PRIMARY KEY,
+    id_cliente INTEGER,
+    id_peluqueria INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.peluqueria
-(
-    idPeluqueria SERIAL PRIMARY KEY,
-    nombrePeluqueria TEXT COLLATE pg_catalog."default",
-    idComuna INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.peluqueria(
+    id_peluqueria SERIAL PRIMARY KEY,
+    nombre_peluqueria TEXT COLLATE pg_catalog."default",
+    id_comuna INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.empleado_peluqueria
-(
-    idEmpleadoPeluqueria SERIAL PRIMARY KEY,
-    idPeluqueria INTEGER,
-    idEmpleado INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.empleado_peluqueria(
+    id_empleado_peluqueria SERIAL PRIMARY KEY,
+    id_peluqueria INTEGER,
+    id_empleado INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.horario
-(
-    idHorario SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS public.horario(
+    id_horario SERIAL PRIMARY KEY,
     fecha DATE,
-    hora TIME
-);
+    hora TIME);
 
-CREATE TABLE IF NOT EXISTS public.cita
-(
-    idCita SERIAL PRIMARY KEY,
-    idPeluqueria INTEGER,
-    idHorario INTEGER,
-    idEmpleado INTEGER,
-    duracion TEXT COLLATE pg_catalog."default"
-);
+CREATE TABLE IF NOT EXISTS public.cita(
+    id_cita SERIAL PRIMARY KEY,
+    id_peluqueria INTEGER,
+    id_horario INTEGER,
+    id_empleado INTEGER,
+    duracion TEXT COLLATE pg_catalog."default");
 
-CREATE TABLE IF NOT EXISTS public.producto
-(
-    idProducto SERIAL PRIMARY KEY,
-    idDetalle INTEGER,
-    nombreProducto TEXT COLLATE pg_catalog."default",
-    precioProducto INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.producto(
+    id_producto SERIAL PRIMARY KEY,
+    id_detalle INTEGER,
+    nombre_producto TEXT COLLATE pg_catalog."default",
+    precio_producto INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.detalle
-(
-    idDetalle SERIAL PRIMARY KEY,
-    idPago INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.detalle(
+    id_detalle SERIAL PRIMARY KEY,
+    id_pago INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.servicio
-(
-    idServicio SERIAL PRIMARY KEY,
-    idDetalle INTEGER,
-    tipoServicio TEXT COLLATE pg_catalog."default",
-    precioServicio INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.servicio(
+    id_servicio SERIAL PRIMARY KEY,
+    id_detalle INTEGER,
+    tipo_servicio TEXT COLLATE pg_catalog."default",
+    precio_servicio INTEGER);
 
-CREATE TABLE IF NOT EXISTS public.pago
-(
-    idPago SERIAL PRIMARY KEY,
-    montoPago INTEGER
-);
+CREATE TABLE IF NOT EXISTS public.pago(
+    id_pago SERIAL PRIMARY KEY,
+    monto_pago INTEGER);
 
 -- Creación de las relaciones
 
 ALTER TABLE IF EXISTS public.cliente
-    ADD CONSTRAINT "idComunaFK" FOREIGN KEY (idComuna)
-    REFERENCES public.comuna (idComuna) MATCH SIMPLE
+    ADD CONSTRAINT "idComunaFK" FOREIGN KEY (id_comuna)
+    REFERENCES public.comuna (id_comuna) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.empleado
-    ADD CONSTRAINT "idComunaFK" FOREIGN KEY (idComuna)
-    REFERENCES public.comuna (idComuna) MATCH SIMPLE
+    ADD CONSTRAINT "idComunaFK" FOREIGN KEY (id_comuna)
+    REFERENCES public.comuna (id_comuna) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.empleado
-    ADD CONSTRAINT "idSueldoFK" FOREIGN KEY (idSueldo)
-    REFERENCES public.sueldo (idSueldo) MATCH SIMPLE
+    ADD CONSTRAINT "idSueldoFK" FOREIGN KEY (id_sueldo)
+    REFERENCES public.sueldo (id_sueldo) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cliente_peluqueria
-    ADD CONSTRAINT "idClienteFK" FOREIGN KEY (idCLiente)
-    REFERENCES public.cliente (idCliente) MATCH SIMPLE
+    ADD CONSTRAINT "idClienteFK" FOREIGN KEY (id_cLiente)
+    REFERENCES public.cliente (id_cliente) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cliente_peluqueria
-    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (idPeluqueria)
-    REFERENCES public.Peluqueria (idPeluqueria) MATCH SIMPLE
+    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (id_peluqueria)
+    REFERENCES public.Peluqueria (id_peluqueria) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.peluqueria
-    ADD CONSTRAINT "idComuna" FOREIGN KEY (idComuna)
-    REFERENCES public.comuna (idComuna) MATCH SIMPLE
+    ADD CONSTRAINT "idComuna" FOREIGN KEY (id_comuna)
+    REFERENCES public.comuna (id_comuna) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.empleado_peluqueria
-    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (idPeluqueria)
-    REFERENCES public.peluqueria (idPeluqueria) MATCH SIMPLE
+    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (id_peluqueria)
+    REFERENCES public.peluqueria (id_peluqueria) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.empleado_peluqueria
-    ADD CONSTRAINT "idEmpleadoFK" FOREIGN KEY (idEmpleado)
-    REFERENCES public.empleado (idEmpleado) MATCH SIMPLE
+    ADD CONSTRAINT "idEmpleadoFK" FOREIGN KEY (id_empleado)
+    REFERENCES public.empleado (id_empleado) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cita
-    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (idPeluqueria)
-    REFERENCES public.peluqueria (idPeluqueria) MATCH SIMPLE
+    ADD CONSTRAINT "idPeluqueriaFK" FOREIGN KEY (id_peluqueria)
+    REFERENCES public.peluqueria (id_peluqueria) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cita
-    ADD CONSTRAINT "idHorarioFK" FOREIGN KEY (idHorario)
-    REFERENCES public.horario (idHorario) MATCH SIMPLE
+    ADD CONSTRAINT "idHorarioFK" FOREIGN KEY (id_horario)
+    REFERENCES public.horario (id_horario) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cita
-    ADD CONSTRAINT "idEmpleadoFK" FOREIGN KEY (idEmpleado)
-    REFERENCES public.empleado (idEmpleado) MATCH SIMPLE
+    ADD CONSTRAINT "idEmpleadoFK" FOREIGN KEY (id_empleado)
+    REFERENCES public.empleado (id_empleado) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.producto
-    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (idDetalle)
-    REFERENCES public.detalle (idDetalle) MATCH SIMPLE
+    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
+    REFERENCES public.detalle (id_detalle) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.detalle
-    ADD CONSTRAINT "idPagoFK" FOREIGN KEY (idPago)
-    REFERENCES public.pago (idPago) MATCH SIMPLE
+    ADD CONSTRAINT "idPagoFK" FOREIGN KEY (id_pago)
+    REFERENCES public.pago (id_pago) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.servicio
-    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (idDetalle)
-    REFERENCES public.detalle (idDetalle) MATCH SIMPLE
+    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
+    REFERENCES public.detalle (id_detalle) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
