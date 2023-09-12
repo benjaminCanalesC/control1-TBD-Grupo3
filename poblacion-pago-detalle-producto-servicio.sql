@@ -6,11 +6,9 @@ CREATE TABLE IF NOT EXISTS pago (
 
 INSERT INTO pago (monto_pago)
 VALUES
-    (10000),
+    (35000),
     (20000),
-    (15000),
-    (30000),
-    (20000);
+    (13000);
 	
 -- TABLA DETALLE
 CREATE TABLE IF NOT EXISTS detalle (
@@ -23,7 +21,6 @@ INSERT INTO detalle (id_pago)
 VALUES
     (1),
     (2),
-    (1),
     (3);
 	
 -- TABLA PRODUCTO
@@ -36,10 +33,10 @@ CREATE TABLE IF NOT EXISTS producto (
 
 INSERT INTO producto (id_detalle, nombre_producto, precio_producto)
 VALUES
-    (1, 'Tinte pelo', 10000),
-    (2, 'Shampoo', 5000),
-    (1, 'Acondicionador', 5000),
-    (3, 'Crema para afeitar', 3000);
+    ('Tinte pelo', 10000),
+    ('Shampoo', 5000),
+    ('Acondicionador', 5000),
+    ('Crema para afeitar', 3000);
 	
 -- TABLA SERVICIO
 CREATE TABLE IF NOT EXISTS servicio (
@@ -49,11 +46,28 @@ CREATE TABLE IF NOT EXISTS servicio (
     precio_servicio INT
 );
 
-INSERT INTO servicio (id_detalle, tipo_servicio, precio_servicio)
+INSERT INTO servicio (tipo_servicio, precio_servicio)
 VALUES
-    (1, 'Colorear pelo', 20000),
-    (2, 'Cortar pelo', 10000),
-    (1, 'Cortar barba', 10000),
-    (2, 'Lavado de pelo', 5000),
-    (2, 'Rizado de pelo', 5000),
-    (2, 'Peinar', 5000);
+    ('Colorear pelo', 20000),
+    ('Cortar pelo', 10000),
+    ('Cortar barba', 10000),
+    ('Lavado de pelo', 5000),
+    ('Rizado de pelo', 5000),
+    ('Peinar', 5000);
+
+INSERT INTO producto_detalle (id_producto, id_detalle)
+VALUES 
+ (2,1),
+ (3,1),
+ (2,2),
+ (3,2),
+ (4,3);
+
+INSERT INTO servicio_detalle (id_servicio, id_detalle)
+VALUES
+ (2,1),
+ (4,1),
+ (6,1),
+ (4,2),
+ (6,2),
+ (3,3);
