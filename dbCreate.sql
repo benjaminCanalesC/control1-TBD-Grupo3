@@ -50,11 +50,11 @@ CREATE TABLE IF NOT EXISTS public.cita(
     id_peluqueria INTEGER,
     id_horario INTEGER,
     id_empleado INTEGER,
+    id_detalle INTEGER,
     duracion TEXT COLLATE pg_catalog."default");
 
 CREATE TABLE IF NOT EXISTS public.producto(
     id_producto SERIAL PRIMARY KEY,
-    id_detalle INTEGER,
     nombre_producto TEXT COLLATE pg_catalog."default",
     precio_producto INTEGER);
 
@@ -64,13 +64,22 @@ CREATE TABLE IF NOT EXISTS public.detalle(
 
 CREATE TABLE IF NOT EXISTS public.servicio(
     id_servicio SERIAL PRIMARY KEY,
-    id_detalle INTEGER,
     tipo_servicio TEXT COLLATE pg_catalog."default",
     precio_servicio INTEGER);
 
 CREATE TABLE IF NOT EXISTS public.pago(
     id_pago SERIAL PRIMARY KEY,
     monto_pago INTEGER);
+
+CREATE TABLE IF NOT EXISTS public.producto_detalle(
+    id_producto_detalle SERIAL PRIMARY KEY,
+    id_producto INTEGER,
+    id_detalle INTEGER);
+
+CREATE TABLE IF NOT EXISTS public.servicio_detalle(
+    id_servicio_detalle SERIAL PRIMARY KEY,
+    id_servicio INTEGER,
+    id_detalle INTEGER);
 
 -- Creación de las relaciones
 
@@ -129,6 +138,12 @@ ALTER TABLE IF EXISTS public.cita
     ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.cita
+    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
+    REFERENCES public.detalle (id_detalle) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+ALTER TABLE IF EXISTS public.cita
     ADD CONSTRAINT "idHorarioFK" FOREIGN KEY (id_horario)
     REFERENCES public.horario (id_horario) MATCH SIMPLE
     ON UPDATE NO ACTION
@@ -140,21 +155,33 @@ ALTER TABLE IF EXISTS public.cita
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
-ALTER TABLE IF EXISTS public.producto
-    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
-    REFERENCES public.detalle (id_detalle) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
-
 ALTER TABLE IF EXISTS public.detalle
     ADD CONSTRAINT "idPagoFK" FOREIGN KEY (id_pago)
     REFERENCES public.pago (id_pago) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
-ALTER TABLE IF EXISTS public.servicio
+ALTER TABLE IF EXISTS public.producto_detalle
+    ADD CONSTRAINT "idProductoFK" FOREIGN KEY (id_producto)
+    REFERENCES public.producto (id_producto) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+ALTER TABLE IF EXISTS public.producto_detalle
     ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
     REFERENCES public.detalle (id_detalle) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+ALTER TABLE IF EXISTS public.servicio_detalle
+    ADD CONSTRAINT "idDetalleFK" FOREIGN KEY (id_detalle)
+    REFERENCES public.detalle (id_detalle) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+ALTER TABLE IF EXISTS public.servicio_detalle
+    ADD CONSTRAINT "idServicioFK" FOREIGN KEY (id_servicio)
+    REFERENCES public.servicio (id_servicio) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
