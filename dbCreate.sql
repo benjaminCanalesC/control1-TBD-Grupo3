@@ -155,6 +155,13 @@ ALTER TABLE IF EXISTS public.cita
     REFERENCES public.empleado (id_empleado) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
+	
+
+ALTER TABLE IF EXISTS public.cita
+    ADD CONSTRAINT "idClienteFK" FOREIGN KEY (id_cLiente)
+    REFERENCES public.cliente (id_cliente) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.detalle
     ADD CONSTRAINT "idPagoFK" FOREIGN KEY (id_pago)
