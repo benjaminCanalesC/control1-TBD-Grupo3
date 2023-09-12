@@ -1,12 +1,12 @@
 
 
-insert into comuna (idComuna, nombreComuna) values (1, 'Santiago');
-insert into comuna (idComuna, nombreComuna) values (2, 'Renca');
-insert into comuna (idComuna, nombreComuna) values (3, 'Las Condes');
-insert into comuna (idComuna, nombreComuna) values (4, 'Maipú');
-insert into comuna (idComuna, nombreComuna) values (5, 'La Florida');
-insert into comuna (idComuna, nombreComuna) values (6, 'Tocopilla');
-insert into comuna (idComuna, nombreComuna) values (7, 'Copiapó');
-insert into comuna (idComuna, nombreComuna) values (8, 'Valparaíso');
-insert into comuna (idComuna, nombreComuna) values (9, 'Quintero');
-insert into comuna (idComuna, nombreComuna) values (10, 'Rancagua');
+insert into comuna (nombreComuna) values ('Santiago');
+insert into comuna (nombreComuna) values ('Renca');
+insert into comuna (nombreComuna) values ('Las Condes');
+insert into comuna (nombreComuna) values ('Maipú');
+insert into comuna (nombreComuna) values ('La Florida');
+insert into comuna (nombreComuna) values ('Tocopilla');
+insert into comuna (nombreComuna) values ('Copiapó');
+insert into comuna (nombreComuna) values ('Valparaíso');
+insert into comuna (nombreComuna) values ('Quintero');
+insert into comuna (nombreComuna) values ('Rancagua');
