@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS producto (
     precio_producto INT
 );
 
-INSERT INTO producto (id_detalle, nombre_producto, precio_producto)
+INSERT INTO producto (nombre_producto, precio_producto)
 VALUES
     ('Tinte pelo', 10000),
     ('Shampoo', 5000),
