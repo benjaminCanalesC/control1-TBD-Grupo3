@@ -45,6 +45,19 @@ insert into horario (fecha, hora) values ('2023-01-04', '15:56');
 insert into horario (fecha, hora) values ('2023-07-22', '18:13');
 insert into horario (fecha, hora) values ('2023-06-02', '19:32');
 insert into horario (fecha, hora) values ('2023-02-01', '10:23');
+insert into horario (fecha, hora) values ('2021-01-01', '10:00'); 
+insert into horario (fecha, hora) values ('2021-01-01', '11:00');
+insert into horario (fecha, hora) values ('2021-01-01', '12:00'); 
+insert into horario (fecha, hora) values ('2021-01-01', '13:00'); 
+insert into horario (fecha, hora) values ('2021-02-01', '10:00'); 
+insert into horario (fecha, hora) values ('2021-02-01', '11:00'); 
+insert into horario (fecha, hora) values ('2021-02-01', '12:00'); 
+insert into horario (fecha, hora) values ('2021-02-01', '13:00'); 
+insert into horario (fecha, hora) values ('2021-03-01', '10:00'); 
+insert into horario (fecha, hora) values ('2021-03-01', '11:00'); 
+insert into horario (fecha, hora) values ('2021-03-01', '12:00'); 
+insert into horario (fecha, hora) values ('2021-03-01', '13:00');
+
 
 INSERT INTO pago (monto_pago)
 VALUES
@@ -222,3 +235,15 @@ insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (18, 5, 16, 4, 1, '15 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (19, 6, 17, 5, 10, '10 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (20, 7, 17, 1, 1, '20 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 13, 1, 1, 1, '20 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 14, 1, 2, 2, '25 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 15, 2, 3, 3, '10 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 16, 3, 4, 4, '15 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 17, 1, 1, 1, '20 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 18, 2, 2, 2, '30 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 19, 2, 3, 3, '40 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 20, 3, 4, 4, '15 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 21, 1, 1, 1, '10 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 22, 2, 2, 2, '8 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 23, 3, 3, 3, '50 minutos');
+insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 24, 3, 4, 4, '120 minutos');
