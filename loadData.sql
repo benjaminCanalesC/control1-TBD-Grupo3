@@ -22,16 +22,16 @@ insert into sueldo (monto) values (230000);
 insert into sueldo (monto) values (380000);
 insert into sueldo (monto) values (420000);
 
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Víctor', 'Flores', 1);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Cintia', 'Romero', 1);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Sergio', 'Alvarez', 3);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Claudia', 'Sanchez', 4);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Julio', 'Gonzalez', 5);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Horacio', 'Gimenez', 5);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Susana', 'Fernandez', 7);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Julio', 'Gutierrez', 5);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Liliana', 'Rodriguez', 9);
-insert into cliente (nombre_cliente, apellido_cliente, id_comuna) values ('Juan', 'Benitez', 10);
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Víctor', 'Flores', 1, 'H');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Cintia', 'Romero', 1, 'M');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Sergio', 'Alvarez', 3, 'H');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Claudia', 'Sanchez', 4, 'M');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Julio', 'Gonzalez', 5, 'H');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Horacio', 'Gimenez', 5, 'H');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Susana', 'Fernandez', 7, 'M');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Julio', 'Gutierrez', 5, 'H');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Liliana', 'Rodriguez', 9, 'M');
+insert into cliente (nombre_cliente, apellido_cliente, id_comuna, genero) values ('Juan', 'Benitez', 10, 'H');
 
 insert into horario (fecha, hora) values ('2023-01-25', '12:32');
 insert into horario (fecha, hora) values ('2023-05-06', '12:20');
