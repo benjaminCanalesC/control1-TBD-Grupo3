@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS public.cliente(
     id_cliente SERIAL PRIMARY KEY,
     nombre_cliente TEXT COLLATE pg_catalog."default",
     apellido_cliente TEXT COLLATE pg_catalog."default",
-    id_comuna INTEGER);
+    id_comuna INTEGER,
+    genero TEXT COLLATE pg_catalog."default");
 
 CREATE TABLE IF NOT EXISTS public.comuna(
     id_comuna SERIAL PRIMARY KEY,
