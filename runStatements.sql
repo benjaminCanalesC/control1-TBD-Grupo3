@@ -25,13 +25,45 @@ FROM HorarioCitasCount hc
 INNER JOIN ComunaMinCitas cmc ON hc.comuna = cmc.comuna AND hc.peluqueria = cmc.peluqueria AND hc.num_citas = cmc.min_citas
 GROUP BY hc.comuna, hc.peluqueria;
 
+-- query 3
+
+--  calcula los ingresos mensuales para cada empleado en cada peluquería según año y mes
+with IngresosMensuales as (
+    select pe.id_peluqueria, em.id_empleado, extract(year from ho.fecha) as anio, 
+		extract(month from ho.fecha) as mes, sum(su.monto) as ingresos_mensuales
+    from peluqueria as pe
+        join empleado_peluqueria as ep on pe.id_peluqueria = ep.id_peluqueria
+        join empleado as em on ep.id_empleado = em.id_empleado
+        join cita as ci on em.id_empleado = ci.id_empleado
+        join sueldo as su on em.id_sueldo = su.id_sueldo
+		join horario as ho on ho.id_horario = ci.id_horario
+    where
+        extract(year from ho.fecha) >= '2023' - 2  -- indicando lo últimos dos años
+    group by
+        pe.id_peluqueria, em.id_empleado, extract(year from ho.fecha), extract(month from ho.fecha)
+),
+-- con base a IngresosMensuales se hace un ranking 
+MaxIngresosPorPeluqueria as (
+    select id_peluqueria, id_empleado, anio, mes, ingresos_mensuales,
+        row_number() over (partition by id_peluqueria, anio, mes order by ingresos_mensuales desc) as ranking
+    from IngresosMensuales
+)
+-- se hace la consulta
+select pe.id_peluqueria, mip.anio, mip.mes, em.nombre_empleado, mip.ingresos_mensuales
+from MaxIngresosPorPeluqueria as mip
+    join peluqueria as pe on mip.id_peluqueria = pe.id_peluqueria
+    join empleado as em on mip.id_empleado = em.id_empleado
+where mip.ranking = 1;  -- el primer ranking tiene el mayor ingreso
+
 
 -- query 5
 select cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
-from servicio as s, servicio_detalle as sd, cita as ci, cliente as cli, comuna as co, pago as pa, peluqueria as pe, detalle as d
-where s.tipo_servicio = 'Colorear pelo' AND s.id_servicio = sd.id_servicio
-AND ci.id_detalle = sd.id_detalle AND cli.id_cliente = ci.id_cliente AND cli.id_comuna = co.id_comuna
-AND pe.id_peluqueria = ci.id_peluqueria AND sd.id_detalle = d.id_detalle AND pa.id_pago = d.id_pago
+from servicio as s, servicio_detalle as sd, cita as ci, cliente as cli, 
+     comuna as co, pago as pa, peluqueria as pe, detalle as de
+where   s.tipo_servicio = 'Colorear pelo' and s.id_servicio = sd.id_servicio
+		and ci.id_detalle = sd.id_detalle and cli.id_cliente = ci.id_cliente 
+		and cli.id_comuna = co.id_comuna and pe.id_peluqueria = ci.id_peluqueria 
+		and sd.id_detalle = de.id_detalle and pa.id_pago = de.id_pago
 
 -- query 7
 -- Elimina las vistas si existen
