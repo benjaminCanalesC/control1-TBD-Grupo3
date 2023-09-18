@@ -92,6 +92,43 @@ FROM ClienteDuracionMaxima CDM
 INNER JOIN DuracionMaximaPorPeluqueria DMP ON CDM.fecha_mes = DMP.fecha_mes AND CDM.nombre_peluqueria = DMP.nombre_peluqueria AND CDM.duracion_maxima = DMP.max_duracion
 ORDER BY año, mes;
 
+--------------------------------
+-- query 8
+
+-- 8. Identificar servicio más caro por peluquería
+
+-- La tabla que rankea los servicios por peluquería se llama
+-- ranking_servicios_por_peluqueria, de ella selecciono los datos
+-- de la peluqueria y los del servicio asociado, considerando
+-- solo los servicios con ranking número 1 (los servicios más caros).
+-- Observación: Esta consulta mostrará más de un servicio por peluquería
+-- en el caso que sean igual de caros
+
+WITH ranking_servicios_por_peluqueria AS (
+	-- En esta subconsulta hago un ranking de los servicios más caros a
+	-- los más baratos haciendo partición por id_peluqueria (los que tengan
+	-- ranking_precio_servicio igual a 1 serían los servicios más caros
+	-- por peluquería)
+	SELECT ci.id_peluqueria, pel.nombre_peluqueria,
+			ser.tipo_servicio, ser.precio_servicio,
+			RANK() OVER (PARTITION BY ci.id_peluqueria 
+						 ORDER BY ser.precio_servicio DESC) 
+						 AS ranking_precio_servicio
+	FROM cita AS ci, detalle AS d, servicio_detalle AS sd,
+		 servicio AS ser, peluqueria AS pel
+	-- en el where busco unir las tablas cita, detalle,
+	-- servicio y peluqueria
+	WHERE ci.id_peluqueria = pel.id_peluqueria AND
+		  ci.id_detalle = d.id_detalle AND 
+		  d.id_detalle = sd.id_detalle AND
+		  sd.id_servicio = ser.id_servicio
+)
+SELECT id_peluqueria, nombre_peluqueria, tipo_servicio, precio_servicio
+FROM ranking_servicios_por_peluqueria -- tabla con los servicios rankeados
+WHERE ranking_precio_servicio = 1 -- para los servicios más caros por peluqueria
+ORDER BY id_peluqueria
+
+--------------------------------
 
 -- query 9
 with totalcitas as (
