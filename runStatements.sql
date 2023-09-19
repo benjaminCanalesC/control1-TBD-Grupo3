@@ -25,6 +25,63 @@ FROM HorarioCitasCount hc
 INNER JOIN ComunaMinCitas cmc ON hc.comuna = cmc.comuna AND hc.peluqueria = cmc.peluqueria AND hc.num_citas = cmc.min_citas
 GROUP BY hc.comuna, hc.peluqueria;
 
+--------------------
+-- query 2
+-- 2. lista de clientes que gastan más dinero mensual por peluquería, indicando
+-- comuna del cliente y de peluquería, además de cuanto gasto
+
+-- Supuesto: en la tabla pago se considera el pago a realizar por el cliente,
+-- entonces en base a esta calcularé los clientes que gastan más dinero mensual
+-- pór peluquería
+
+-- Observación: esta consulta puede entregar más de una fila por peluquería
+-- en el caso que dos o más clientes tengan un mismo monto mensual máximo
+
+DROP VIEW IF EXISTS gastoMensualClientePel, rankingPagos;
+
+-- Primero hago vista para calcular lo que gasta 
+-- mensualmente cada cliente por peluqueria
+CREATE VIEW gastoMensualClientePel AS
+SELECT ci.id_peluqueria, ci.id_cliente, 
+	   DATE_TRUNC('month', hor.fecha) AS mes, 
+	   SUM(pa.monto_pago) AS monto_mensual -- aca ira el gasto mensual
+FROM cita AS ci, cliente AS cli, horario AS hor,
+	 detalle AS de, pago AS pa
+WHERE
+      ci.id_cliente = cli.id_cliente AND 
+	  ci.id_horario = hor.id_horario AND
+	  ci.id_detalle = de.id_detalle AND
+	  de.id_pago = pa.id_pago
+GROUP BY ci.id_peluqueria, ci.id_cliente, DATE_TRUNC('month', hor.fecha)
+ORDER BY id_peluqueria;
+
+-- Hago otra vista para rankear los clientes que gastan más por peluqueria y mes
+CREATE VIEW rankingPagos AS
+SELECT id_peluqueria, id_cliente, mes,
+	  RANK() OVER (PARTITION BY id_peluqueria
+				  ORDER BY monto_mensual) AS ranking_gasto, monto_mensual
+FROM gastoMensualClientePel
+ORDER BY id_peluqueria, ranking_gasto;
+
+-- Consulta final: aca de la vista de rankingPagos, dejo los que tienen
+-- ranking número 1 (o sea los que más gastan mensualmente por peluqueria),
+-- también uní la vista con las tablas peluqueria y cliente, más la comuna
+-- para anclar la comuna tanto de la peluqueria y del cliente
+SELECT rp.id_peluqueria, pe.nombre_peluqueria,
+       co_peluqueria.nombre_comuna AS comuna_peluqueria,
+	   rp.id_cliente, cli.nombre_cliente,
+	   co_cliente.nombre_comuna AS comuna_cliente,
+	   rp.monto_mensual, rp.mes
+FROM rankingPagos AS rp, comuna AS co_peluqueria, 
+	 comuna AS co_cliente, peluqueria AS pe, cliente AS cli
+WHERE rp.ranking_gasto = 1 AND -- para obtener los clientes que gastan mas por mes
+	  rp.id_cliente = cli.id_cliente AND
+	  rp.id_peluqueria = pe.id_peluqueria AND
+	  cli.id_comuna = co_cliente.id_comuna AND
+	  pe.id_comuna = co_peluqueria.id_comuna
+ORDER BY rp.id_peluqueria
+
+------------------
 -- query 3
 
 --  calcula los ingresos mensuales para cada empleado en cada peluquería según año y mes
