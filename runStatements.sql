@@ -113,13 +113,38 @@ where mip.ranking = 1;  -- el primer ranking tiene el mayor ingreso
 
 
 -- query 5
-select cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
+select distinct cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
 from servicio as s, servicio_detalle as sd, cita as ci, cliente as cli, 
      comuna as co, pago as pa, peluqueria as pe, detalle as de
 where   s.tipo_servicio = 'Colorear pelo' and s.id_servicio = sd.id_servicio
 		and ci.id_detalle = sd.id_detalle and cli.id_cliente = ci.id_cliente 
 		and cli.id_comuna = co.id_comuna and pe.id_peluqueria = ci.id_peluqueria 
 		and sd.id_detalle = de.id_detalle and pa.id_pago = de.id_pago
+
+--query 6
+-- Calcula el número de citas por peluquería, año y mes
+WITH CitasPorPeluqueria AS (
+	SELECT pe.id_peluqueria, EXTRACT(YEAR FROM ho.fecha) AS anio, EXTRACT(MONTH FROM ho.fecha) AS mes, COUNT(*) AS total_citas
+	FROM peluqueria AS pe, cita AS ci, horario AS ho
+	WHERE pe.id_peluqueria = ci.id_peluqueria
+	AND ci.id_horario = ho.id_horario
+	AND EXTRACT(YEAR FROM ho.fecha) BETWEEN 2018 AND 2019 
+	GROUP BY pe.id_peluqueria, EXTRACT(YEAR FROM ho.fecha), EXTRACT(MONTH FROM ho.fecha)),
+	
+-- Encuentra el horario más concurrido por peluquería, año y mes
+MaxCitasPorPeluqueria AS (
+	SELECT id_peluqueria, anio, mes, MAX(total_citas) AS max_citas
+	FROM CitasPorPeluqueria 
+	GROUP BY id_peluqueria, anio, mes)
+
+-- Obtiene el horario más concurrido por peluquería, año y mes
+SELECT pe.id_peluqueria, mc.anio, mc.mes, pe.nombre_peluqueria, mc.max_citas AS total_citas
+FROM MaxCitasPorPeluqueria AS mc, CitasPorPeluqueria AS cp, peluqueria AS pe
+WHERE mc.id_peluqueria = cp.id_peluqueria
+AND mc.id_peluqueria = pe.id_peluqueria
+AND mc.anio = cp.anio
+AND mc.mes = cp.mes
+ORDER BY mc.anio, mc.mes, pe.nombre_peluqueria;
 
 -- query 7
 -- Elimina las vistas si existen
