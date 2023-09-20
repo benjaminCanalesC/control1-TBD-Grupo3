@@ -43,7 +43,7 @@ DROP VIEW IF EXISTS gastoMensualClientePel, rankingPagos;
 -- mensualmente cada cliente por peluqueria
 CREATE VIEW gastoMensualClientePel AS
 SELECT ci.id_peluqueria, ci.id_cliente, 
-	   DATE_TRUNC('month', hor.fecha) AS mes, 
+	   EXTRACT (MONTH FROM hor.fecha) AS mes, 
 	   SUM(pa.monto_pago) AS monto_mensual -- aca ira el gasto mensual
 FROM cita AS ci, cliente AS cli, horario AS hor,
 	 detalle AS de, pago AS pa
@@ -52,7 +52,7 @@ WHERE
 	  ci.id_horario = hor.id_horario AND
 	  ci.id_detalle = de.id_detalle AND
 	  de.id_pago = pa.id_pago
-GROUP BY ci.id_peluqueria, ci.id_cliente, DATE_TRUNC('month', hor.fecha)
+GROUP BY ci.id_peluqueria, ci.id_cliente, EXTRACT (MONTH FROM hor.fecha)
 ORDER BY id_peluqueria;
 
 -- Hago otra vista para rankear los clientes que gastan más por peluqueria y mes
@@ -67,9 +67,9 @@ ORDER BY id_peluqueria, ranking_gasto;
 -- ranking número 1 (o sea los que más gastan mensualmente por peluqueria),
 -- también uní la vista con las tablas peluqueria y cliente, más la comuna
 -- para anclar la comuna tanto de la peluqueria y del cliente
-SELECT rp.id_peluqueria, pe.nombre_peluqueria,
+SELECT pe.nombre_peluqueria,
        co_peluqueria.nombre_comuna AS comuna_peluqueria,
-	   rp.id_cliente, cli.nombre_cliente,
+	   cli.nombre_cliente,
 	   co_cliente.nombre_comuna AS comuna_cliente,
 	   rp.monto_mensual, rp.mes
 FROM rankingPagos AS rp, comuna AS co_peluqueria, 
@@ -79,7 +79,6 @@ WHERE rp.ranking_gasto = 1 AND -- para obtener los clientes que gastan mas por m
 	  rp.id_peluqueria = pe.id_peluqueria AND
 	  cli.id_comuna = co_cliente.id_comuna AND
 	  pe.id_comuna = co_peluqueria.id_comuna
-ORDER BY rp.id_peluqueria
 
 ------------------
 -- query 3
@@ -180,7 +179,8 @@ WITH ranking_servicios_por_peluqueria AS (
 		  d.id_detalle = sd.id_detalle AND
 		  sd.id_servicio = ser.id_servicio
 )
-SELECT id_peluqueria, nombre_peluqueria, tipo_servicio, precio_servicio
+
+SELECT DISTINCT (id_peluqueria), nombre_peluqueria, tipo_servicio, precio_servicio
 FROM ranking_servicios_por_peluqueria -- tabla con los servicios rankeados
 WHERE ranking_precio_servicio = 1 -- para los servicios más caros por peluqueria
 ORDER BY id_peluqueria
