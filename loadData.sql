@@ -272,7 +272,6 @@ insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 22, 2, 2, 2, '8 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 23, 3, 3, 3, '50 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 24, 3, 4, 4, '120 minutos');
-insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 24, 1, 1, 2, '15 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (1, 25, 3, 2, 1, '25 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (2, 26, 1, 3, 2, '20 minutos');
 insert into cita (id_peluqueria, id_horario, id_empleado, id_detalle, id_cliente, duracion) values (2, 27, 3, 4, 2,'10 minutos');
