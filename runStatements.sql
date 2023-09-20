@@ -116,6 +116,24 @@ from MaxIngresosPorPeluqueria as mip
 where mip.ranking = 1;  -- el primer ranking tiene el mayor ingreso
 
 ---------------------------------------------------------------------
+-- query 4: lista de clientes hombres que se cortan el pelo y la barba, indicando el nombre 
+-- y el apellido
+
+SELECT DISTINCT cli.nombre_cliente, cli.apellido_cliente
+FROM cliente cli, cliente_peluqueria cp, peluqueria pe,
+cita ci, detalle d, servicio_detalle sd, servicio s
+WHERE cli.genero = 'H'
+AND cli.id_cliente = cp.id_cliente
+AND cp.id_peluqueria = pe.id_peluqueria
+AND pe.id_peluqueria = ci.id_peluqueria
+AND ci.id_detalle = d.id_detalle
+AND d.id_detalle = sd.id_detalle
+AND sd.id_servicio = s.id_servicio
+AND (s.tipo_servicio = 'Cortar barba' OR s.tipo_servicio = 'Cortar pelo')
+GROUP BY cli.nombre_cliente, cli.apellido_cliente
+HAVING COUNT(DISTINCT s.tipo_servicio) = 2
+	
+---------------------------------------------------------------------
 -- query 5: lista de clientes que se tiñen el pelo, indicando la 
 -- comuna del cliente, la peluquería donde se atendió y el valor
 -- que pagó
@@ -127,6 +145,7 @@ where   s.tipo_servicio = 'Colorear pelo' and s.id_servicio = sd.id_servicio
 		and ci.id_detalle = sd.id_detalle and cli.id_cliente = ci.id_cliente 
 		and cli.id_comuna = co.id_comuna and pe.id_peluqueria = ci.id_peluqueria 
 		and sd.id_detalle = de.id_detalle and pa.id_pago = de.id_pago
+	
 ---------------------------------------------------------------------
 -- query 6: identificar el horario más concurrido por peluquería
 -- durante el 2018 y 2029, desagregados por mes
