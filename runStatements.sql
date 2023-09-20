@@ -34,9 +34,6 @@ GROUP BY hc.comuna, hc.peluqueria;
 -- entonces en base a esta calcularé los clientes que gastan más dinero mensual
 -- pór peluquería
 
--- Observación: esta consulta puede entregar más de una fila por peluquería
--- en el caso que dos o más clientes tengan un mismo monto mensual máximo
-
 DROP VIEW IF EXISTS gastoMensualClientePel, rankingPagos;
 
 -- Primero hago vista para calcular lo que gasta 
