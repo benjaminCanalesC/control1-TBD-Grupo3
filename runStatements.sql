@@ -114,7 +114,7 @@ where mip.ranking = 1;  -- el primer ranking tiene el mayor ingreso
 
 
 -- query 5
-select cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
+select distinct cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
 from servicio as s, servicio_detalle as sd, cita as ci, cliente as cli, 
      comuna as co, pago as pa, peluqueria as pe, detalle as de
 where   s.tipo_servicio = 'Colorear pelo' and s.id_servicio = sd.id_servicio
