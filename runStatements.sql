@@ -1,5 +1,9 @@
--- consultas control 1
--- query 1
+-- Consultas Control 1 (Sección A-1)
+-- Integrantes: Benjamin Canales, Aracely Castro, Daniel Eguiluz,
+--              Branco García, Vicente Mieres
+---------------------------------------------------------------------
+-- query 1: horario con menos citas durante el día por peluquería, 
+-- identificando la comuna
 
 -- Elimina las vistas si existen
 DROP VIEW IF EXISTS ComunaMinCitas, HorarioCitasCount;
@@ -25,10 +29,10 @@ FROM HorarioCitasCount hc
 INNER JOIN ComunaMinCitas cmc ON hc.comuna = cmc.comuna AND hc.peluqueria = cmc.peluqueria AND hc.num_citas = cmc.min_citas
 GROUP BY hc.comuna, hc.peluqueria;
 
---------------------
--- query 2
--- 2. lista de clientes que gastan más dinero mensual por peluquería, indicando
--- comuna del cliente y de peluquería, además de cuanto gasto
+---------------------------------------------------------------------
+-- query 2: lista de clientes que gastan más dinero mensual por 
+-- peluquería, indicando comuna del cliente y de peluquería, además
+-- de cuanto gasto
 
 -- Supuesto: en la tabla pago se considera el pago a realizar por el cliente,
 -- entonces en base a esta calcularé los clientes que gastan más dinero mensual
@@ -77,10 +81,13 @@ WHERE rp.ranking_gasto = 1 AND -- para obtener los clientes que gastan mas por m
 	  cli.id_comuna = co_cliente.id_comuna AND
 	  pe.id_comuna = co_peluqueria.id_comuna
 
-------------------
--- query 3
+---------------------------------------------------------------------
+-- query 3: lista de peluqueros que ha ganado más por mes los 
+-- últimos 3 años, esto por peluquería
 
---  calcula los ingresos mensuales para cada empleado en cada peluquería según año y mes
+--  calcula los ingresos mensuales para cada empleado en cada
+-- peluquería según año y mes
+
 with IngresosMensuales as (
     select pe.id_peluqueria, em.id_empleado, extract(year from ho.fecha) as anio, 
 		extract(month from ho.fecha) as mes, sum(su.monto) as ingresos_mensuales
@@ -108,8 +115,11 @@ from MaxIngresosPorPeluqueria as mip
     join empleado as em on mip.id_empleado = em.id_empleado
 where mip.ranking = 1;  -- el primer ranking tiene el mayor ingreso
 
+---------------------------------------------------------------------
+-- query 5: lista de clientes que se tiñen el pelo, indicando la 
+-- comuna del cliente, la peluquería donde se atendió y el valor
+-- que pagó
 
--- query 5
 select distinct cli.nombre_cliente, co.nombre_comuna as comuna_cliente, pe.nombre_peluqueria, pa.monto_pago
 from servicio as s, servicio_detalle as sd, cita as ci, cliente as cli, 
      comuna as co, pago as pa, peluqueria as pe, detalle as de
@@ -117,8 +127,10 @@ where   s.tipo_servicio = 'Colorear pelo' and s.id_servicio = sd.id_servicio
 		and ci.id_detalle = sd.id_detalle and cli.id_cliente = ci.id_cliente 
 		and cli.id_comuna = co.id_comuna and pe.id_peluqueria = ci.id_peluqueria 
 		and sd.id_detalle = de.id_detalle and pa.id_pago = de.id_pago
+---------------------------------------------------------------------
+-- query 6: identificar el horario más concurrido por peluquería
+-- durante el 2018 y 2029, desagregados por mes
 
---query 6
 -- Calcula el número de citas por peluquería, año y mes
 WITH CitasPorPeluqueria AS (
 	SELECT pe.id_peluqueria, EXTRACT(YEAR FROM ho.fecha) AS anio, EXTRACT(MONTH FROM ho.fecha) AS mes, COUNT(*) AS total_citas
@@ -143,7 +155,10 @@ AND mc.anio = cp.anio
 AND mc.mes = cp.mes
 ORDER BY mc.anio, mc.mes, pe.nombre_peluqueria;
 
--- query 7
+---------------------------------------------------------------------
+-- query 7: identificar al cliente que ha tenido las citas más 
+-- largas por peluquería, por mes
+
 -- Elimina las vistas si existen
 DROP VIEW IF EXISTS ClienteDuracionMaxima, DuracionMaximaPorPeluqueria;
 
@@ -170,10 +185,8 @@ FROM ClienteDuracionMaxima CDM
 INNER JOIN DuracionMaximaPorPeluqueria DMP ON CDM.fecha_mes = DMP.fecha_mes AND CDM.nombre_peluqueria = DMP.nombre_peluqueria AND CDM.duracion_maxima = DMP.max_duracion
 ORDER BY año, mes;
 
---------------------------------
--- query 8
-
--- 8. Identificar servicio más caro por peluquería
+---------------------------------------------------------------------
+-- query 8: Identificar servicio más caro por peluquería
 
 -- La tabla que rankea los servicios por peluquería se llama
 -- ranking_servicios_por_peluqueria, de ella selecciono los datos
@@ -207,9 +220,10 @@ FROM ranking_servicios_por_peluqueria -- tabla con los servicios rankeados
 WHERE ranking_precio_servicio = 1 -- para los servicios más caros por peluqueria
 ORDER BY id_peluqueria
 
---------------------------------
+---------------------------------------------------------------------
+-- query 9: identificar al peluquero que ha trabajado más por
+-- mes durante el 2021
 
--- query 9
 with totalcitas as (
 	select 
 		extract(month from h.fecha) as mes, 
@@ -227,7 +241,9 @@ from totalcitas
 where ranking = 1
 group by mes, nombre
 
--- query 10
+---------------------------------------------------------------------
+-- query 10: identificar lista de totales por comuna, cantidad de
+-- peluquerías, cantidad de clientes residentes en la comuna
 
 select c.nombre_comuna, count(distinct p.id_peluqueria) as cant_Peluquerias, count(distinct cl.id_cliente) as cant_Clientes
 from comuna as c, peluqueria as p
